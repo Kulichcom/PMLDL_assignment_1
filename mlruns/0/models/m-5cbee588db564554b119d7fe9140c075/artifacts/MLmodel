@@ -1,0 +1,23 @@
+artifact_path: /Users/iliakulichenko/PMLDL_assignment_1/mlruns/0/models/m-5cbee588db564554b119d7fe9140c075/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.skops
+    predict_fn: predict
+    python_version: 3.13.5
+  sklearn:
+    code: null
+    pickled_model: model.skops
+    serialization_format: skops
+    sklearn_version: 1.9.1
+    skops_trusted_types: null
+mlflow_version: 3.16.0
+model_id: m-5cbee588db564554b119d7fe9140c075
+model_size_bytes: 12383
+model_uuid: m-5cbee588db564554b119d7fe9140c075
+prompts: null
+run_id: 25a8a1f6bb29495cb9df7f92abd24cd8
+utc_time_created: '2026-09-16 11:14:39.166214'
