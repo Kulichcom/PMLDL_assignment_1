@@ -14,60 +14,61 @@ Given an applicant's details (income, credit history, education, etc.), the mode
 
 ## Repository structure
 
-├── code
-│ ├── datasets/ # data cleaning and splitting script
-│ ├── models/ # feature engineering, training, evaluation script
-│ └── deployment/
-│ ├── api/ # FastAPI service + Dockerfile
-│ ├── app/ # Streamlit app + Dockerfile
-│ └── docker-compose.yml
-├── data
-│ ├── raw/ # original dataset (train.csv, test.csv)
-│ └── processed/ # cleaned, split data
-├── models/ # trained model + label encoders (model.joblib, encoders.joblib)
-├── pipeline.py # orchestrator: runs all 3 stages in sequence
-├── run_scheduler.sh # loops pipeline.py every 5 minutes
-├── requirements.txt
-└── README.md
-
+~~~
+code/
+  datasets/          data cleaning and splitting script
+  models/            feature engineering, training, evaluation script
+  deployment/
+    api/             FastAPI service + Dockerfile
+    app/             Streamlit app + Dockerfile
+    docker-compose.yml
+data/
+  raw/               original dataset (train.csv, test.csv)
+  processed/         cleaned, split data
+models/              trained model + label encoders (model.joblib, encoders.joblib)
+pipeline.py          orchestrator: runs all 3 stages in sequence
+run_scheduler.sh     loops pipeline.py every 5 minutes
+requirements.txt
+README.md
+~~~
 
 ## Setup
 
 1. Clone the repo and create a virtual environment:
-```bash
+   ~~~
    git clone https://github.com/Kulichcom/PMLDL_assignment_1.git
    cd PMLDL_assignment_1
    python3 -m venv venv
    source venv/bin/activate
-```
+   ~~~
 2. Install dependencies:
-```bash
+   ~~~
    pip install -r requirements.txt
-```
-3. Make sure [Docker Desktop](https://www.docker.com/products/docker-desktop/) is installed and running.
+   ~~~
+3. Make sure Docker Desktop is installed and running.
 
 ## Running the pipeline manually (one-off)
 
-```bash
+~~~
 python pipeline.py
-```
+~~~
 
 This runs data cleaning, model training, and rebuilds/restarts the Docker containers, in that order.
 
 ## Running the pipeline automatically (every 5 minutes)
 
-```bash
+~~~
 chmod +x run_scheduler.sh
 nohup ./run_scheduler.sh &
-```
+~~~
 
 This starts a background loop that runs `pipeline.py`, waits 5 minutes, and repeats indefinitely. All output is logged to `pipeline.log`.
 
 To stop it:
-```bash
+~~~
 jobs
 kill %1
-```
+~~~
 
 **Note:** this uses a simple shell loop rather than `cron`, since `cron` requires macOS Full Disk Access permissions that we chose not to grant for this project. The loop achieves the same "runs every 5 minutes" requirement while running entirely under the user's own permissions.
 
