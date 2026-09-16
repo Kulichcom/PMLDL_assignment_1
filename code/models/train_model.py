@@ -9,6 +9,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 TRAIN_PATH = "data/processed/train.csv"
 TEST_PATH = "data/processed/test.csv"
 MODEL_PATH = "models/model.joblib"
+ENCODERS_PATH = "models/encoders.joblib"
 
 CATEGORICAL_COLS = ["Gender", "Married", "Dependents", "Education", "Self_Employed", "Property_Area"]
 TARGET_COL = "Loan_Status"
@@ -31,7 +32,7 @@ def engineer_features(train_df, test_df):
     X_test = test_df.drop(columns=[TARGET_COL])
     y_test = test_df[TARGET_COL]
 
-    return X_train, y_train, X_test, y_test
+    return X_train, y_train, X_test, y_test, encoders
 
 def train_and_evaluate(X_train, y_train, X_test, y_test):
     with mlflow.start_run():
@@ -53,12 +54,14 @@ def train_and_evaluate(X_train, y_train, X_test, y_test):
         mlflow.sklearn.log_model(model, "model")
         return model
 
-def save_model(model):
+def save_artifacts(model, encoders):
     joblib.dump(model, MODEL_PATH)
+    joblib.dump(encoders, ENCODERS_PATH)
     print(f"Model saved to {MODEL_PATH}")
+    print(f"Encoders saved to {ENCODERS_PATH}")
 
 if __name__ == "__main__":
     train_df, test_df = load_data()
-    X_train, y_train, X_test, y_test = engineer_features(train_df, test_df)
+    X_train, y_train, X_test, y_test, encoders = engineer_features(train_df, test_df)
     model = train_and_evaluate(X_train, y_train, X_test, y_test)
-    save_model(model)
+    save_artifacts(model, encoders)
