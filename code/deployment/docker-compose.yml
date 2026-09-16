@@ -1,0 +1,18 @@
+services:
+  api:
+    build:
+      context: ../..
+      dockerfile: code/deployment/api/Dockerfile
+    container_name: loan_api
+    ports:
+      - "8000:8000"
+
+  app:
+    build:
+      context: ../..
+      dockerfile: code/deployment/app/Dockerfile
+    container_name: loan_app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
